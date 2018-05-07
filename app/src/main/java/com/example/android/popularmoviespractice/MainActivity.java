@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public void populateGrid() {
 
         final String sort_param = "popular";
-        final String your_api_key = "f3a1a00157a6bc8750d0d6a07bfd9811";
+        final String your_api_key = "api_key";
 
         final RecyclerView recyclerView = findViewById(R.id.rv_movies);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
