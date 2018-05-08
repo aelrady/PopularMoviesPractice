@@ -10,7 +10,6 @@ import com.example.android.popularmoviespractice.api.MovieApiClient;
 import com.example.android.popularmoviespractice.api.MovieApiInterface;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<MovieResults>() {
             @Override
             public void onResponse(Call<MovieResults> call, Response<MovieResults> response) {
-                List<Movie> movies = response.body().getResults();
+                ArrayList<Movie> movies = (ArrayList<Movie>) response.body().getResults();
                 ArrayList<String> picturePathList = new ArrayList<>();
                 for (int i = 0; i < movies.size(); i++) {
                     picturePathList.add(IMAGE_BASE_URL + movies.get(i).getPosterPath());
                 }
-                MovieAdapter movieAdapter = new MovieAdapter(MainActivity.this, picturePathList);
+                MovieAdapter movieAdapter = new MovieAdapter(MainActivity.this, picturePathList, movies);
                 recyclerView.setAdapter(movieAdapter);
             }
 

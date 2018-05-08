@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DetailActivity">
 
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/movie_poster"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/sample_0"
-        android:padding="16dp"/>
+        android:padding="8dp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -33,14 +37,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="May 2018"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="9.8/10"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
@@ -57,6 +61,9 @@
         android:layout_height="wrap_content"
         android:text="A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground fight clubs forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion."
         android:layout_below="@id/divide_1"
-        android:padding="10dp"/>
+        android:padding="8dp"
+        android:textSize="16sp"/>
 
 </RelativeLayout>
+
+</ScrollView>
