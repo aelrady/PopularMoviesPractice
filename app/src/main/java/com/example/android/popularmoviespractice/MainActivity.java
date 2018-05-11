@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.widget.Toast;
 
 import com.example.android.popularmoviespractice.api.MovieApiClient;
@@ -26,6 +27,14 @@ public class MainActivity extends AppCompatActivity {
 
         populateGrid();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sort_menu, menu);
+        return true;
+    }
+
+
 
     public void populateGrid() {
 
