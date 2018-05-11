@@ -2,6 +2,7 @@ package com.example.android.popularmoviespractice;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
@@ -11,13 +12,16 @@ import com.squareup.picasso.Picasso;
 
 public class DetailActivity extends AppCompatActivity {
 
-    private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w500";
+    private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w185";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         populateDetailActivity();
     }
@@ -30,7 +34,7 @@ public class DetailActivity extends AppCompatActivity {
         String moviePosterUrl = movie.getPosterPath();
         String fullMoviePosterUrl = IMAGE_BASE_URL + moviePosterUrl;
         ImageView moviePosterImageView = findViewById(R.id.movie_poster);
-        Picasso.with(this).load(fullMoviePosterUrl).into(moviePosterImageView);
+        Picasso.with(this).load(fullMoviePosterUrl).fit().centerCrop().into(moviePosterImageView);
 
         String title = movie.getTitle();
         TextView titleTextView = findViewById(R.id.title);
