@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.android.popularmoviespractice.api.MovieApiClient;
@@ -19,13 +21,36 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w185";
+    private String sort_param;
+    private RecyclerView recyclerView;
+    private ArrayList<String> picturePathList;
+    private ArrayList<Movie> movies;
+    private MovieAdapter movieAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        populateGrid();
+        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+            populateGrid();
+        }
+        else {
+            movies = savedInstanceState.getParcelableArrayList("movies");
+            Log.v("Movies: ", String.valueOf(movies));
+            picturePathList = savedInstanceState.getStringArrayList("pictures");
+            Log.v("Picture paths: ", String.valueOf(picturePathList));
+            movieAdapter = new MovieAdapter(MainActivity.this, picturePathList, movies);
+            recyclerView.setAdapter(movieAdapter);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("movies", movies);
+        outState.putStringArrayList("pictures", picturePathList);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -34,14 +59,26 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.most_popular) {
+            sort_param = "popular";
+            populateGrid();
+        } else if(item.getItemId() == R.id.highest_rated) {
+            sort_param = "top_rated";
+            populateGrid();
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 
     public void populateGrid() {
 
-        final String sort_param = "popular";
         final String your_api_key = "f3a1a00157a6bc8750d0d6a07bfd9811";
+        sort_param = "popular";
 
-        final RecyclerView recyclerView = findViewById(R.id.rv_movies);
+        recyclerView = findViewById(R.id.rv_movies);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
 
@@ -51,12 +88,12 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<MovieResults>() {
             @Override
             public void onResponse(Call<MovieResults> call, Response<MovieResults> response) {
-                ArrayList<Movie> movies = (ArrayList<Movie>) response.body().getResults();
-                ArrayList<String> picturePathList = new ArrayList<>();
+                movies = (ArrayList<Movie>) response.body().getResults();
+                picturePathList = new ArrayList<>();
                 for (int i = 0; i < movies.size(); i++) {
                     picturePathList.add(IMAGE_BASE_URL + movies.get(i).getPosterPath());
                 }
-                MovieAdapter movieAdapter = new MovieAdapter(MainActivity.this, picturePathList, movies);
+                movieAdapter = new MovieAdapter(MainActivity.this, picturePathList, movies);
                 recyclerView.setAdapter(movieAdapter);
             }
 
