@@ -19,6 +19,8 @@ import com.example.android.popularmoviespractice.api.MovieApiInterface;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,25 +30,26 @@ public class MainActivity extends AppCompatActivity {
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/w185";
     private String sort_param = "popular";
     GridLayoutManager gridLayoutManager;
-    private RecyclerView recyclerView;
     private ArrayList<String> picturePathList;
     private ArrayList<Movie> movies;
     private MovieAdapter movieAdapter;
-    private TextView connectionTextView;
+
+    private RecyclerView recyclerView;
+
+    @BindView(R.id.no_connection) TextView connectionTextView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
             if (savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
                 if (isConnected()) {
                     populateGrid();
-                    connectionTextView = findViewById(R.id.no_connection);
                     connectionTextView.setVisibility(View.GONE);
                 } else {
-                    connectionTextView = findViewById(R.id.no_connection);
                     connectionTextView.setVisibility(View.VISIBLE);
                 }
             } else {
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.setLayoutManager(gridLayoutManager);
                 movieAdapter = new MovieAdapter(MainActivity.this, picturePathList, movies);
                 recyclerView.setAdapter(movieAdapter);
+                connectionTextView.setVisibility(View.GONE);
             }
         }
 
@@ -78,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (isConnected()) {
-            connectionTextView = findViewById(R.id.no_connection);
             connectionTextView.setVisibility(View.GONE);
             if (item.getItemId() == R.id.most_popular) {
                 sort_param = "popular";
@@ -90,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
             }
         } else {
-            connectionTextView = findViewById(R.id.no_connection);
             connectionTextView.setVisibility(View.VISIBLE);
         }
         return true;
